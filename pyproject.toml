@@ -2,6 +2,29 @@
 name = "douyinpay"
 version = "0.1.0"
 requires-python = ">=3.10"
+description = "抖音支付 Python SDK (Python SDK for Douyin Pay)"
+authors = [{name = "minibear", email = "321983@qq.com"}]
+license = "MIT"
+keywords = ["python", "sdk", "douyinpay", "api", "抖音支付"]
+readme = "README.md"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Topic :: Office/Business :: Financial",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+dependencies = [
+    "httpx>=0.28.1",
+    "cryptography>=35.0.0",
+    "gmssl>=3.2.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/minibear2021/douyinpay"
+Repository = "https://github.com/minibear2021/douyinpay"
 
 [build-system]
 requires = ["setuptools>=68"]
