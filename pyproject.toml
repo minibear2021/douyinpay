@@ -18,8 +18,8 @@ classifiers = [
 ]
 dependencies = [
     "httpx>=0.28.1",
-    "cryptography>=35.0.0",
-    "gmssl>=3.2.0",
+    "cryptography>=42",
+    "gmssl>=3.2",
 ]
 
 [project.urls]
