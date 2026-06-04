@@ -148,9 +148,12 @@ async def payment_notify(request: Request):
         )
         print(f"订单 {data['out_trade_no']} 支付状态: {data['trade_state']}")
     except SignatureError:
-        return Response(status_code=401)
+        # 验签失败：返回 4XX + 应答报文
+        return Response(status_code=401, content='{"code":"FAIL","message":"signature error"}')
     except DecryptionError:
-        return Response(status_code=500)
+        # 解密失败：返回 5XX + 应答报文
+        return Response(status_code=500, content='{"code":"FAIL","message":"decryption error"}')
+    # 处理成功：返回 200 或 204，无需应答报文
     return Response(status_code=200)
 ```
 
