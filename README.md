@@ -249,8 +249,6 @@ douyinpay/
     profit_sharing.py   # 分账服务
     transfer.py         # 转账服务
     certificate.py      # 证书 API
-  tools/
-    download_docs.py    # 文档下载工具
 ```
 
 ## 开发
