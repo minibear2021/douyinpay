@@ -120,16 +120,11 @@ client.profit_sharing.create_order(
 ### 3. 客户端调起支付签名
 
 ```python
-# App 调起支付参数
-params = client.payments.app_sign_for_client(
+# App/JSAPI 调起支付参数
+params = client.payments.sign_for_client(
     appid="awz9w2wncdof4ba6", prepay_id="dy11ys5s7sxyv43x...",
 )
 # 返回: {appid, partnerid, prepayid, package, noncestr, timestamp, sign}
-
-# JSAPI 调起支付参数
-params = client.payments.jsapi_sign_for_client(
-    appid="awz9w2wncdof4ba6", prepay_id="dy11ys5s7sxyv43x...",
-)
 ```
 
 ### 4. 处理回调通知
@@ -182,8 +177,7 @@ async with AsyncDouyinPayClient(config) as client:
 | | `client.payments.query()` | 按交易号查询 |
 | | `client.payments.query_by_out_trade_no()` | 按商户订单号查询 |
 | | `client.payments.close()` | 关闭订单 |
-| | `client.payments.app_sign_for_client()` | App 调起支付签名 |
-| | `client.payments.jsapi_sign_for_client()` | JSAPI 调起支付签名 |
+| | `client.payments.sign_for_client()` | App/JSAPI 调起支付签名 |
 | **退款** | `client.refunds.create()` | 申请退款 |
 | | `client.refunds.query_by_out_refund_no()` | 查询退款 |
 | **账单** | `client.bills.trade()` | 申请交易账单 |

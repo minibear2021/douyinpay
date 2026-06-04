@@ -1,11 +1,15 @@
 import base64
 import json as _json
+import time
 
 from douyinpay._auth import build_verify_message, verify_signature
 from douyinpay._certificate import CertificateManager
 from douyinpay._cipher import aes_decrypt
 from douyinpay._config import Config
 from douyinpay._errors import SignatureError
+
+# 回调通知时间戳有效窗口：24h4m（覆盖最大重试间隔）
+_CALLBACK_TIMESTAMP_WINDOW = (24 * 60 + 4) * 60
 
 
 class NotificationParser:
@@ -53,11 +57,19 @@ class NotificationParser:
         verify_msg = build_verify_message(int(timestamp), nonce, body)
         verify_signature(verify_msg, signature, cert_pem)
 
-        # 2. Parse JSON
+        # 2. Validate timestamp (callback window is 24h4m, matching Go SDK)
+        ts = int(timestamp)
+        now = int(time.time())
+        if abs(now - ts) > _CALLBACK_TIMESTAMP_WINDOW:
+            raise SignatureError(
+                f"Notification timestamp {ts} is outside the 24h4m window (now: {now})"
+            )
+
+        # 3. Parse JSON
         data = _json.loads(body)
         resource = data["resource"]
 
-        # 3. Decrypt ciphertext
+        # 4. Decrypt ciphertext
         # ciphertext is base64-encoded
         ciphertext = base64.b64decode(resource["ciphertext"])
         # nonce is a raw string, used directly as bytes (like Go SDK)

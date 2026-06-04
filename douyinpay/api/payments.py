@@ -61,7 +61,7 @@ class PaymentsService(BaseService):
         })
         return self._request("POST", "/v1/trade/transactions/app", body)
 
-    def app_sign_for_client(
+    def sign_for_client(
         self,
         *,
         appid: str,
@@ -69,13 +69,7 @@ class PaymentsService(BaseService):
         timestamp: int | None = None,
         nonce_str: str | None = None,
     ) -> dict:
-        """生成 App 客户端调起支付的签名参数。
-
-        签名串格式（4行，每行以 \\n 结束）：
-            appid
-            timestamp
-            noncestr
-            prepayid
+        """生成客户端调起支付的签名参数（App / JSAPI 通用）。
 
         Args:
             appid: 应用ID。
@@ -195,35 +189,6 @@ class PaymentsService(BaseService):
             "settle_info": settle_info,
         })
         return self._request("POST", "/v1/trade/transactions/jsapi", body)
-
-    def jsapi_sign_for_client(
-        self,
-        *,
-        appid: str,
-        prepay_id: str,
-        timestamp: int | None = None,
-        nonce_str: str | None = None,
-    ) -> dict:
-        """生成 JSAPI 客户端调起支付的签名参数。
-
-        Args:
-            appid: 应用ID。
-            prepay_id: 预支付交易会话ID，由下单接口返回。
-            timestamp: Unix 时间戳（秒），不传则使用当前时间。
-            nonce_str: 随机字符串，不长于32位，不传则自动生成。
-
-        Returns:
-            {appid, partnerid, prepayid, package, noncestr, timestamp, sign}
-        """
-        return _build_client_sign_params(
-            appid=appid,
-            mchid=self._client.config.mchid,
-            prepay_id=prepay_id,
-            private_key_pem=self._client.config.private_key,
-            sign_type=self._client.config.sign_type,
-            timestamp=timestamp,
-            nonce_str=nonce_str,
-        )
 
     # ---- Native 支付 ----
 

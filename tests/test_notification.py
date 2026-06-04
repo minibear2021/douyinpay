@@ -1,5 +1,6 @@
 import base64
 import json
+import time
 
 import pytest
 
@@ -61,7 +62,7 @@ class TestNotificationParser:
             },
         })
 
-        ts = 1722072480
+        ts = int(time.time())
         verify_msg = build_verify_message(ts, "noncestr", body)
         private_key = serialization.load_pem_private_key(
             rsa_private_key_pem.encode(), password=None

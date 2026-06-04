@@ -72,7 +72,7 @@ class TestPaymentsService:
 
     def test_app_sign_for_client(self, client):
         svc = PaymentsService(client)
-        result = svc.app_sign_for_client(appid="test", prepay_id="dyxxx", timestamp=123, nonce_str="abc")
+        result = svc.sign_for_client(appid="test", prepay_id="dyxxx", timestamp=123, nonce_str="abc")
         assert result["appid"] == "test"
         assert result["partnerid"] == "123"
         assert result["prepayid"] == "dyxxx"
@@ -81,8 +81,8 @@ class TestPaymentsService:
         assert result["noncestr"] == "abc"
         assert "sign" in result
 
-    def test_jsapi_sign_for_client(self, client):
+    def test_sign_for_client(self, client):
         svc = PaymentsService(client)
-        result = svc.jsapi_sign_for_client(appid="test", prepay_id="dyxxx")
+        result = svc.sign_for_client(appid="test", prepay_id="dyxxx")
         assert result["prepayid"] == "dyxxx"
         assert "sign" in result

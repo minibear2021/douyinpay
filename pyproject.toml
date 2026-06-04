@@ -1,6 +1,6 @@
 [project]
 name = "douyinpay"
-version = "0.2.0"
+version = "0.3.0"
 requires-python = ">=3.10"
 description = "抖音支付 Python SDK (Python SDK for Douyin Pay)"
 authors = [{name = "minibear", email = "321983@qq.com"}]
