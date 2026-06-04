@@ -9,8 +9,7 @@
 ## 安装
 
 ```bash
-pip install -r requirements.txt
-pip install -e .
+pip install douyinpay
 ```
 
 ## 依赖
@@ -34,7 +33,7 @@ config = Config(
     private_key="""-----BEGIN PRIVATE KEY-----
 MIIEvQIBADANBgkqhkiG9w0BAQ...
 -----END PRIVATE KEY-----""",          # 商户私钥（PEM 字符串，非文件路径）
-    encrypt_key="kLZwhQ9nVE20Guwc1Wog2hh1T1Z93O0H",  # 平台生成的密钥字符串
+    encrypt_key="0123456789abcdef0123456789abcdef",  # 平台生成的密钥字符串
     sign_type="RSA",                    # 签名算法："RSA" 或 "SM2"
 )
 
@@ -223,7 +222,7 @@ except NetworkError as e:
 config = Config(
     mchid="8020221008775523",
     serial_no="...",
-    private_key="...",     # SM2 私钥（十六进制字符串）
+    private_key="...",     # SM2 私钥
     encrypt_key="...",     # 平台生成的密钥字符串
     sign_type="SM2",
 )
@@ -259,7 +258,7 @@ douyinpay/
 
 ```bash
 pip install -r requirements.txt
-pip install -e .
 pip install pytest pytest-asyncio
+pip install -e .
 pytest tests/ -v        # 运行全部 68 个测试
 ```
