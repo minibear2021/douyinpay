@@ -6,6 +6,7 @@ import time
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import padding, rsa
 from cryptography.exceptions import InvalidSignature
+from cryptography import x509
 
 from douyinpay._errors import SignatureError
 
@@ -64,6 +65,19 @@ def _build_sign_message(
     Each line is terminated with ``\\n``, including the last line.
     """
     return f"{method}\n{path}\n{timestamp}\n{nonce_str}\n{body}\n"
+
+
+def _load_public_key(pem: str):
+    """Load an RSA public key from a PEM string.
+
+    Accepts both ``-----BEGIN CERTIFICATE-----`` and
+    ``-----BEGIN PUBLIC KEY-----`` formats.
+    """
+    data = pem.encode("utf-8")
+    if "BEGIN CERTIFICATE" in pem:
+        cert = x509.load_pem_x509_certificate(data)
+        return cert.public_key()
+    return serialization.load_pem_public_key(data)
 
 
 def sign_request(
@@ -170,9 +184,7 @@ def verify_signature(
         except (ValueError, Exception):
             raise SignatureError("SM2 signature verification failed")
     else:
-        public_key = serialization.load_pem_public_key(
-            public_key_pem.encode("utf-8"),
-        )
+        public_key = _load_public_key(public_key_pem)
         try:
             public_key.verify(
                 raw_signature,
