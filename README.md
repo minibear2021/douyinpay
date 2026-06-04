@@ -85,13 +85,13 @@ resp = await client.payments.app_prepay(
 order = client.payments.query("TXN001")
 order = client.payments.query_by_out_trade_no("ORD20240601001")
 
-# 关闭订单
-client.payments.close("TXN001")
+# 关闭订单（使用商户订单号关单）
+client.payments.close("ORD20240601001")
 
 # 退款
 refund = client.refunds.create(
     transaction_id="TXN001", out_refund_no="REF001",
-    amount={"total": 100, "currency": "CNY"},
+    amount={"refund": 100, "total": 100, "currency": "CNY"},
 )
 refund_info = client.refunds.query_by_out_refund_no("REF001")
 
@@ -99,16 +99,21 @@ refund_info = client.refunds.query_by_out_refund_no("REF001")
 bill = client.bills.trade("2024-06-01")
 bill_content = client.bills.download(bill["download_url"])
 
-# 商户转账
+# 商户转账（单笔转账到用户抖音零钱）
 client.transfers.create_batch(
-    out_batch_no="BATCH001", batch_name="批量转账",
-    total_amount=10000, total_num=2, transfer_detail_list=[...],
+    appid="awz9w2wncdof4ba6",
+    out_bill_no="BILL001",
+    transfer_scene_id="SCENE_001",
+    openid="oUpF8uMEB4jR",
+    transfer_amount=100,
+    transfer_remark="商户转账",
 )
 
 # 分账
 client.profit_sharing.create_order(
+    appid="awz9w2wncdof4ba6",
     transaction_id="TXN001", out_order_no="PS001",
-    receivers=[{"mchid": "6000000000000002", "amount": 30, "description": "分账给子商户"}],
+    receivers=[{"type": "MERCHANT_ID", "account": "6000000000000002", "amount": 30, "description": "分账给子商户"}],
 )
 ```
 
